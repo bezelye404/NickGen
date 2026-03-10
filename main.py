@@ -124,6 +124,34 @@ def generate_name_with_nickname(max_total_chars=14):
     
     return f"{first} {last} ----- {nickname}"
 
+CYAN    = "\033[96m"
+YELLOW  = "\033[93m"
+GREEN   = "\033[92m"
+MAGENTA = "\033[95m"
+DIM     = "\033[2m"
+BOLD    = "\033[1m"
+RESET   = "\033[0m"
+
+def print_banner(mode="random"):
+    banner = f"""{CYAN}{BOLD}
+ ███╗   ██╗██╗ ██████╗██╗  ██╗ ██████╗ ███████╗███╗   ██╗
+ ████╗  ██║██║██╔════╝██║ ██╔╝██╔════╝ ██╔════╝████╗  ██║
+ ██╔██╗ ██║██║██║     █████╔╝ ██║  ███╗█████╗  ██╔██╗ ██║
+ ██║╚██╗██║██║██║     ██╔═██╗ ██║   ██║██╔══╝  ██║╚██╗██║
+ ██║ ╚████║██║╚██████╗██║  ██╗╚██████╔╝███████╗██║ ╚████║
+ ╚═╝  ╚═══╝╚═╝ ╚═════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝{RESET}
+{DIM}{'─' * 57}{RESET}"""
+    
+    mode_labels = {
+        "random":  f"  {YELLOW}⚡ Mod: Rastgele Nickname Üretici{RESET}",
+        "anlamli": f"  {GREEN}✦ Mod: Anlamlı Nickname Üretici{RESET}",
+        "name":    f"  {MAGENTA}👤 Mod: İsim & Nickname Üretici{RESET}",
+    }
+    
+    print(banner)
+    print(mode_labels.get(mode, mode_labels["random"]))
+    print(f"{DIM}{'─' * 57}{RESET}\n")
+
 def main():
     parser = argparse.ArgumentParser(description="Rastgele Kullanıcı Adı (@nickname) Oluşturucu")
     parser.add_argument("-c", "--count", type=int, default=1, help="Üretilecek kullanıcı adı sayısı")
@@ -134,20 +162,19 @@ def main():
     args = parser.parse_args()
     
     if args.name:
-        print("\n--- İsim & Nickname Üretici ---")
+        print_banner("name")
         for _ in range(args.count):
-            print(generate_name_with_nickname(max_total_chars=args.max_length))
-        print("-------------------------------\n")
+            print(f"  {generate_name_with_nickname(max_total_chars=args.max_length)}")
     elif args.anlamli:
-        print("\n--- Anlamlı Kullanıcı Adı Üretici ---")
+        print_banner("anlamli")
         for _ in range(args.count):
-            print(generate_meaningful_nickname(max_total_chars=args.max_length))
-        print("--------------------------------------\n")
+            print(f"  {generate_meaningful_nickname(max_total_chars=args.max_length)}")
     else:
-        print("\n--- Kullanıcı Adı Üretici ---")
+        print_banner("random")
         for _ in range(args.count):
-            print(generate_random_nickname(max_total_chars=args.max_length))
-        print("-----------------------------\n")
+            print(f"  {generate_random_nickname(max_total_chars=args.max_length)}")
+    
+    print(f"\n{DIM}{'─' * 57}{RESET}")
 
 if __name__ == "__main__":
     main()
